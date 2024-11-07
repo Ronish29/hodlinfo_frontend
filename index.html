@@ -426,7 +426,7 @@
 
         async function insertData() {
             try {
-                const fetchAndInsert = await fetch('http://localhost:4000/api/fetch-and-store', {
+                const fetchAndInsert = await fetch('https://hodlinfo-backend-1zuo.onrender.com/api/fetch-and-store', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -447,7 +447,7 @@
 
         async function getData() {
             try {
-                const response = await fetch('http://localhost:4000/api/top-cryptos');
+                const response = await fetch('https://hodlinfo-backend-1zuo.onrender.com/api/top-cryptos');
 
                 if (!response.ok) {
                     throw new Error("Failed to fetch data from API");

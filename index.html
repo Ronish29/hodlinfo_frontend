@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hodlinfo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Oswald:wght@200..700&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            min-height: 100vh;
+            overflow-x: hidden;
+            font-family: "Oswald", sans-serif;
+            background: #191d28;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            padding: 20px 30px 0px;
+        }
+
+        .logo {
+            padding: 10px;
+        }
+
+        .dropdowns {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .dropdown {
+            position: relative;
+            background: #2e3241;
+            color: #fff;
+            border: 0;
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-size: 1rem;
+            line-height: 1.5;
+            font-weight: 400;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .dropdown::after {
+            content: "▼";
+            font-size: 0.6rem;
+            color: #ffffff;
+        }
+
+        .final::after {
+            content: none;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #ffffff;
+            border-radius: 5px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            min-width: 10rem;
+            width: 100%;
+            text-align: left;
+        }
+
+        .dropdown-menu a {
+            padding-top: 10px;
+            color: #212529;
+            padding: 5px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-menu a:hover {
+            background-color: #ddd;
+        }
+
+        /* Show dropdown menu when dropdown is active */
+        .dropdown.active .dropdown-menu {
+            display: block;
+        }
+
+        .right-side-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .connect-telegram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #3dc6c1;
+            padding: 6px 20px;
+            border-radius: 10px;
+            color: #fff;
+        }
+
+        .connect-telegram img {
+            height: 15px;
+            margin-right: 10px;
+        }
+
+        .toggle {
+            width: 50px;
+            height: 26px;
+            background-color: #2e3241;
+            border-radius: 50px;
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .toggle::before {
+            content: '';
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            background-color: #3dc6c1;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s ease;
+        }
+
+        .toggle.active {
+            background-color: #3dc6c1;
+        }
+
+        .toggle.active::before {
+            transform: translateX(24px);
+            background-color: #2e3241;
+        }
+
+        .best-price-text {
+            color: #74777d;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .trade-info {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            padding: 50px;
+        }
+
+        .trade-info-part {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .percentage {
+            color: #69c8c8;
+            font-size: 2rem;
+        }
+
+        .rupees {
+            color: white;
+            font-size: 3rem;
+            letter-spacing: 2px;
+        }
+
+        .units {
+            color: #74777d;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 1em;
+            margin-top: 20px;
+        }
+
+        tbody {
+            margin: 90%;
+        }
+
+        thead tr th {
+            text-align: center;
+        }
+
+        tbody tr {
+            border-radius: 10px;
+            background: #2d3241;
+            margin-bottom: 20px;
+        }
+
+        th,
+        td {
+            padding: 15px;
+            text-align: center;
+        }
+
+        th {
+
+            color: #74777d;
+            font-weight: normal;
+        }
+
+        .index {
+            color: white;
+        }
+
+        .platform {
+            color: white;
+        }
+
+        .last-traded-price {
+            color: white;
+        }
+
+        .buy-sell-price {
+            color: white;
+        }
+
+
+
+
+
+        .difference.positive {
+            color: #00ff00;
+        }
+
+        .difference.negative {
+            color: #ff0000;
+        }
+
+        .savings.positive {
+            color: #00ff00;
+        }
+
+        .savings.negative {
+            color: #ff0000;
+        }
+
+        .add-to-home {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #0f3460;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                justify-content: center;
+                padding: 20px;
+            }
+
+            .dropdowns {
+                justify-content: center;
+            }
+
+            .right-side-header {
+                margin-top: 20px;
+            }
+
+            .trade-info {
+                padding: 30px;
+                justify-content: center;
+            }
+
+            .trade-info-part {
+                flex-basis: 50%;
+            }
+
+            table {
+                font-size: 0.8rem;
+            }
+
+            th,
+            td {
+                padding: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                flex-direction: column;
+            }
+
+            .dropdowns {
+                margin-top: 20px;
+            }
+
+            .trade-info-part {
+                flex-basis: 100%;
+            }
+
+            table {
+                font-size: 0.7rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <img src="https://hodlinfo.com/static/media/HODLINFO.8f78fc06.png" alt="Logo" height="auto" width="280">
+            </div>
+            <div class="dropdowns">
+                <div class="dropdown" onclick="toggleDropdown(this)">
+                    <span class="dropdown-text">INR</span>
+                    <div class="dropdown-menu">
+                        <a href="#" onclick="selectItem(event, this)">INR</a>
+                    </div>
+                </div>
+                <div class="dropdown" onclick="toggleDropdown(this)">
+                    <span class="dropdown-text">BTC</span>
+                    <div class="dropdown-menu">
+                        <a href="#" onclick="selectItem(event, this)">BTC</a>
+                        <a href="#" onclick="selectItem(event, this)">ETH</a>
+                        <a href="#" onclick="selectItem(event, this)">USDT</a>
+                        <a href="#" onclick="selectItem(event, this)">XRP</a>
+                        <a href="#" onclick="selectItem(event, this)">TRX</a>
+                        <a href="#" onclick="selectItem(event, this)">DASH</a>
+                        <a href="#" onclick="selectItem(event, this)">ZEC</a>
+                        <a href="#" onclick="selectItem(event, this)">XEM</a>
+                        <a href="#" onclick="selectItem(event, this)">IOST</a>
+                        <a href="#" onclick="selectItem(event, this)">WIN</a>
+                        <a href="#" onclick="selectItem(event, this)">BTT</a>
+                        <a href="#" onclick="selectItem(event, this)">WRX</a>
+                    </div>
+                </div>
+                <div class="dropdown final">
+                    BUY BTC
+                </div>
+            </div>
+            <div class="right-side-header">
+                <div>
+                    <p>45</p>
+                </div>
+                <div class="connect-telegram">
+                    <img src="telegram.png" alt="telegram">
+                    <p>Connect Telegram</p>
+                </div>
+                <div class="toggle" onclick="toggleSwitch(this)"></div>
+            </div>
+        </div>
+        <h3 class="best-price-text"> Best Price To Trade</h3>
+        <div class="trade-info">
+            <div class="trade-info-part">
+                <h3 class="percentage">0.1%</h3>
+                <p class="units">5 mins</p>
+            </div>
+            <div class="trade-info-part">
+                <h3 class="percentage">0.96%</h3>
+                <p class="units">1 hour</p>
+            </div>
+            <h1 class="rupees">&#8377;26,56,110</h1>
+            <div class="trade-info-part">
+                <h3 class="percentage">2.73%</h3>
+                <p class="units">1 day</p>
+            </div>
+            <div class="trade-info-part">
+                <h3 class="percentage">7.51%</h3>
+                <p class="units">7 days</p>
+            </div>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        #
+                    </th>
+                    <th>
+                        Platform
+                    </th>
+                    <th>
+                        Last Traded Price
+                    </th>
+                    <th>
+                        Buy / Sell Price
+                    </th>
+                    <th>
+                        Difference
+                    </th>
+                    <th>
+                        Savings
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+        <a class="add-to-home" href="#">
+            Add hodlinfo to home screen
+        </a>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            console.log("DOM fully loaded and parsed");
+            insertData();
+            getData();
+        });
+
+        async function insertData() {
+            try {
+                const fetchAndInsert = await fetch('http://localhost:4000/api/fetch-and-store', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!fetchAndInsert.ok) {
+                    throw new Error('Failed to fetch and store data');
+                }
+
+                const response = await fetchAndInsert.json();
+                console.log(response.message);
+
+            } catch (error) {
+                console.error("Error:", error.message);
+            }
+        }
+
+        async function getData() {
+            try {
+                const response = await fetch('http://localhost:4000/api/top-cryptos');
+
+                if (!response.ok) {
+                    throw new Error("Failed to fetch data from API");
+                }
+
+                const data = await response.json();
+                console.log(data); // Check the response format in the console
+
+                populateTable(data);
+
+            } catch (error) {
+                console.error("Error:", error.message);
+            }
+        }
+
+        function populateTable(data) {
+            const tbody = document.querySelector("table tbody");
+            tbody.innerHTML = "";
+
+            data.forEach((crypto, index) => {
+                const difference = Math.random() > 0.5 ? 'positive' : 'negative';
+                const savingsValue = difference === 'positive' ? `▲ ₹ ${(Math.random() * 100000).toFixed(2)}` : `▼ ₹ ${(Math.random() * 100000).toFixed(2)}`;
+                const differencePercentage = difference === 'positive' ? `+${(Math.random() * 10).toFixed(2)}%` : `-${(Math.random() * 10).toFixed(2)}%`;
+
+
+                const row = document.createElement("tr");
+
+                row.innerHTML = `
+            <td class="index">${index + 1}</td>
+            <td class="platform">
+                
+                ${crypto.name}
+            </td>
+            <td class="last-traded-price">₹ ${Number(crypto.last).toLocaleString()}</td>
+            <td class="buy-sell-price">₹ ${Number(crypto.buy).toLocaleString()} / ₹ ${Number(crypto.sell).toLocaleString()}</td>
+            <td class="difference ${difference}">${differencePercentage}</td>
+            <td class="savings ${difference}">${savingsValue}</td>
+        `;
+
+                tbody.appendChild(row);
+            });
+        }
+
+
+        function toggleDropdown(element) {
+            document.querySelectorAll('.dropdown').forEach(dropdown => {
+                if (dropdown !== element) {
+                    dropdown.classList.remove('active');
+                }
+            });
+            element.classList.toggle('active');
+        }
+
+        document.addEventListener('click', function (event) {
+            const isDropdown = event.target.closest('.dropdown');
+            if (!isDropdown) {
+                document.querySelectorAll('.dropdown').forEach(dropdown => {
+                    dropdown.classList.remove('active');
+                });
+            }
+        });
+
+        function selectItem(event, item) {
+            event.preventDefault();
+            const dropdown = item.closest('.dropdown');
+            const dropdownText = dropdown.querySelector('.dropdown-text');
+            dropdownText.textContent = item.textContent;
+            dropdown.classList.remove('active');
+        }
+
+        
+    </script>
+</body>
+
+</html>
